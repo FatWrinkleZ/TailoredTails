@@ -1,128 +1,161 @@
-import Image from 'next/image'
-import Link from 'next/link';
+"use client";
 
 export default function Home() {
-
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
+    <main className="min-h-screen flex flex-col bg-slate-950 text-slate-50">
+      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col gap-12 py-10">
+        {/* Top badge */}
+        <section className="mt-4 space-y-6">
+          <p className="inline-flex items-center gap-2 text-xs font-semibold tracking-wide text-emerald-300 uppercase">
+            TailoredTails
+            <span className="inline-block h-1 w-1 rounded-full bg-emerald-400" />
+            <span className="text-slate-400">Capstone Project</span>
+          </p>
 
-        <div className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          <Link href="/signin">
-            <span className="link">Login</span>
-          </Link>
-        </div>
+          {/* Hero */}
+          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+            <div className="flex-1 space-y-5">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-slate-50">
+                Find the <span className="text-emerald-400">right dog</span> for{" "}
+                <span className="text-emerald-300">your lifestyle</span>.
+              </h1>
 
-        <div className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          <Link href="/signup">
-            <span className="link">Register</span>
-          </Link>
-        </div>
+              <p className="text-sm sm:text-base text-slate-300 max-w-xl">
+                TailoredTails matches adopters with dogs from nearby shelters based
+                on lifestyle, schedule, and preferences. The goal is to reduce
+                failed adoptions and help both people and dogs find better fits.
+              </p>
 
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <button className="px-6 py-3 rounded-lg bg-emerald-500 hover:bg-emerald-400 transition font-semibold text-slate-950">
+                  Start Matching
+                </button>
+
+                <button className="px-6 py-3 rounded-lg border border-slate-600 hover:border-slate-400 text-slate-100 text-sm flex items-center justify-center gap-2">
+                  Preview Questionnaire
+                  <span className="text-xs bg-slate-800 px-2 py-0.5 rounded-full">
+                    Prototype
+                  </span>
+                </button>
+              </div>
+
+              <div className="text-xs sm:text-sm text-slate-400 space-y-1">
+                <p>• Uses real shelter data (e.g., Miami-Dade).</p>
+                <p>• Matches based on lifestyle, not just appearance.</p>
+                <p>• Built as a full-stack CS capstone project.</p>
+              </div>
+            </div>
+
+            {/* Simple preview card */}
+            <div className="flex-1 w-full max-w-md">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg shadow-emerald-500/10 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-sm font-semibold text-slate-100">
+                    Sample Match Preview
+                  </h2>
+                  <span className="text-xs text-emerald-300 bg-emerald-900/40 px-2 py-1 rounded-full">
+                    Prototype
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-full bg-slate-800 flex items-center justify-center text-2xl">
+                    🐶
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-50">
+                      Luna • 2 yrs • Medium
+                    </p>
+                    <p className="text-xs text-slate-400">
+                      Energetic, apartment-friendly, and good for people with a
+                      busy work schedule.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                  <div className="h-full w-4/5 bg-emerald-400" />
+                </div>
+                <p className="text-xs text-slate-300">
+                  Match score: <span className="font-semibold">82%</span> based on
+                  lifestyle, routine, and activity level.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* How it works */}
+        <section className="space-y-4">
+          <h2 className="text-xl sm:text-2xl font-semibold text-slate-50">
+            How TailoredTails works
+          </h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 space-y-2">
+              <h3 className="text-sm font-semibold text-slate-100">
+                1. You answer questions
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-400">
+                Share your schedule, home setup, experience with dogs, and what
+                you’re looking for in a companion.
+              </p>
+            </div>
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 space-y-2">
+              <h3 className="text-sm font-semibold text-slate-100">
+                2. We process shelter data
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-400">
+                Dog profiles from shelters are standardized so we can compare them
+                fairly against your lifestyle.
+              </p>
+            </div>
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 space-y-2">
+              <h3 className="text-sm font-semibold text-slate-100">
+                3. You get tailored matches
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-400">
+                We surface dogs that fit your situation and explain why each one
+                might be a good match.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-5">
+          <div className="flex-1 space-y-2">
+            <h2 className="text-lg sm:text-xl font-semibold text-slate-50">
+              Built as a capstone, designed for real adopters.
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 max-w-xl">
+              TailoredTails is an early prototype, but the goal is real: help
+              people and dogs find better matches and give shelters a smarter way
+              to present their animals.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button className="px-6 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-sm font-semibold text-slate-950">
+              View Demo Flow
+            </button>
+            <button className="px-6 py-2.5 rounded-lg border border-slate-600 text-xs sm:text-sm text-slate-100">
+              See Shelter Integration Plan
+            </button>
+          </div>
+        </section>
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
+      {/* Footer */}
+      <footer className="border-t border-slate-800 bg-slate-950 py-4 mt-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <p className="text-xs text-slate-500">
+            © {new Date().getFullYear()} TailoredTails · Capstone Project
           </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
+          <p className="text-xs text-slate-500">
+            Built by our team to help people find the right dogs—not just any
+            dogs.
           </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+        </div>
+      </footer>
     </main>
-  )
+  );
 }
