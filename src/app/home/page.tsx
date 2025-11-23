@@ -1,70 +1,137 @@
 "use client"
 import { useAuthContext } from "@/context/AuthContext"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { doc, getDoc } from "firebase/firestore"
+import { db } from "@/firebase/config"
 import logout from "@/firebase/auth/logout"
 
 function Page() {
   const { user } = useAuthContext() as { user: any }
   const router = useRouter()
+  const [embedding, setEmbedding] = useState<number[] | null>(null)
+  const [summary, setSummary] = useState<string | null>(null)
+
+  const takeSurvey = () => router.push("/survey")
+
+  const startBrowsing = () => router.push("/match")
 
   useEffect(() => {
     if (user == null) {
       router.push("/")
+      return
     }
 
-    const labels = ["Cleanliness", "Relaxed", "Extraversion", "Independence", "Family"]
+    // Fetch user's embedding from Firestore
+    const fetchEmbedding = async () => {
+      try {
+        const userDoc = await getDoc(doc(db, "users", user.uid))
+        if (userDoc.exists()) {
+          const data = userDoc.data()
+          if (data.embedding && Array.isArray(data.embedding) && data.embedding.length === 5) {
+            setEmbedding(data.embedding)
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load personality data:", err)
+      }
+    }
 
+    const fetchSummary = async () => {
+      try {
+        const userDoc = await getDoc(doc(db, "users", user.uid))
+        if (userDoc.exists()) {
+          const data = userDoc.data()
+          if (data.summary) {
+            setSummary(data.summary)
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load personality data:", err)
+      }
+    }
+
+    fetchEmbedding()
+    fetchSummary()
+  }, [user, router])
+
+  useEffect(() => {
     const canvas = document.getElementById("personalityChart") as HTMLCanvasElement
     const ctx = canvas?.getContext("2d")
     if (!ctx) return
 
-    // Background
+    const centerX = canvas.width / 2
+    const centerY = canvas.height / 2
+    const maxRadius = 140
+    const sides = 5
+
+    const labels = ["Cleanliness", "Activity", "Social", "Care Time", "Family"]
+
+    // Clear canvas
     ctx.fillStyle = "#111111"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    const centerX = canvas.width / 2
-    const centerY = canvas.height / 2
-    const radius = 140
-    const sides = 5
-
-    const points: { x: number; y: number; label: string }[] = []
-
-    // Draw concentric guide circles (subtle)
+    // Draw guide circles
     ctx.strokeStyle = "#333333"
     ctx.lineWidth = 1
-    for (let r = 40; r <= radius; r += 40) {
+    for (let r = 40; r <= maxRadius; r += 40) {
       ctx.beginPath()
       ctx.arc(centerX, centerY, r, 0, Math.PI * 2)
       ctx.stroke()
     }
 
-    // Draw pentagon outline
+    // Draw outer pentagon outline
+    const outerPoints: { x: number; y: number }[] = []
     ctx.beginPath()
-    for (let i = 0; i <= sides; i++) {
+    for (let i = 0; i < sides; i++) {
       const angle = (i * 2 * Math.PI) / sides - Math.PI / 2
-      const x = centerX + radius * Math.cos(angle)
-      const y = centerY + radius * Math.sin(angle)
-
-      points.push({ x, y, label: labels[i % labels.length] })
-
-      if (i === 0) ctx.moveTo(x, y)
-      else ctx.lineTo(x, y)
+      const x = centerX + maxRadius * Math.cos(angle)
+      const y = centerY + maxRadius * Math.sin(angle)
+      outerPoints.push({ x, y })
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
     }
     ctx.closePath()
     ctx.strokeStyle = "#444444"
     ctx.lineWidth = 2
     ctx.stroke()
 
-    // Draw radial lines from center to vertices
+    // Draw radial lines
     ctx.strokeStyle = "#333333"
     ctx.lineWidth = 1
-    points.forEach(p => {
+    outerPoints.forEach(p => {
       ctx.beginPath()
       ctx.moveTo(centerX, centerY)
       ctx.lineTo(p.x, p.y)
       ctx.stroke()
     })
+
+    // Draw inner filled pentagon based on embedding
+    if (embedding) {
+      ctx.beginPath()
+      embedding.forEach((value, i) => {
+        const angle = (i * 2 * Math.PI) / sides - Math.PI / 2
+        const radius = maxRadius * value  // 0.0 → center, 1.0 → edge
+        const x = centerX + radius * Math.cos(angle)
+        const y = centerY + radius * Math.sin(angle)
+
+        if (i === 0) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+      })
+      ctx.closePath()
+
+      // Fill with gradient (beautiful!)
+      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius)
+      gradient.addColorStop(0, "rgba(34, 197, 94, 0.8)")  // emerald center
+      gradient.addColorStop(1, "rgba(34, 197, 94, 0.2)")  // fade out
+
+      ctx.fillStyle = gradient
+      ctx.fill()
+
+      // Strong outline
+      ctx.strokeStyle = "#22c55e"
+      ctx.lineWidth = 3
+      ctx.stroke()
+    }
 
     // Labels
     ctx.font = "bold 15px Inter, system-ui, sans-serif"
@@ -72,26 +139,34 @@ function Page() {
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"
 
-    points.forEach(p => {
-      const textRadius = radius + 38
+    outerPoints.forEach((p, i) => {
+      const textRadius = maxRadius + 38
       const angle = Math.atan2(p.y - centerY, p.x - centerX)
       const textX = centerX + textRadius * Math.cos(angle)
       const textY = centerY + textRadius * Math.sin(angle)
 
       ctx.save()
       ctx.translate(textX, textY)
-      const rotate = angle + Math.PI / 2
-      ctx.rotate(rotate)
-      ctx.fillText(p.label, 0, 0)
+      ctx.rotate(angle + Math.PI / 2)
+      ctx.fillText(labels[i], 0, 0)
       ctx.restore()
     })
 
-    // Center message
-    ctx.font = "18px Inter, system-ui, sans-serif"
-    ctx.fillStyle = "#64748b"
-    ctx.fillText("No Personality Data Yet", centerX, centerY)
+    // Center message (only if no data)
+    if (!embedding) {
+      ctx.font = "18px Inter, system-ui, sans-serif"
+      ctx.fillStyle = "#64748b"
+      ctx.textAlign = "center"
+      ctx.textBaseline = "middle"
+      ctx.fillText("No Personality Data Yet", centerX, centerY)
+    } else {
+      // Optional: show score in center
+      ctx.font = "bold 16px Inter"
+      ctx.fillStyle = "#22c55e"
+      ctx.fillText("Your Profile", centerX, centerY)
+    }
 
-  }, [user, router])
+  }, [user, router, embedding])  // Re-draw when embedding loads
 
   const handleLogout = async () => {
     const { error } = await logout()
@@ -105,7 +180,6 @@ function Page() {
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 py-12 px-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="flex justify-between items-center mb-10">
           <h1 className="text-4xl font-bold text-white">My Dashboard</h1>
           <button
@@ -117,14 +191,16 @@ function Page() {
         </div>
 
         <p className="text-gray-400 text-lg mb-10">
-          Welcome back! Complete your personality survey to find your perfect dog match.
+          Welcome back! Your personality profile is ready.
         </p>
 
-        {/* CTA + Chart */}
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <div className="space-y-6">
-            <button className="w-full bg-blue-600 text-white text-xl font-bold py-5 rounded-xl hover:bg-blue-500 transition-all duration-300 shadow-xl transform hover:scale-[1.02]">
-              Take Personality Survey
+            <button
+              onClick={takeSurvey}
+              className="w-full bg-blue-600 text-white text-xl font-bold py-5 rounded-xl hover:bg-blue-500 transition-all duration-300 shadow-xl transform hover:scale-[1.02]"
+            >
+              {embedding ? "Retake Survey" : "Take Personality Survey"}
             </button>
 
             <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-2xl">
@@ -138,15 +214,24 @@ function Page() {
                   style={{ imageRendering: "crisp-edges" }}
                 />
               </div>
+            <p className="text-gray-400 mt-6">Summary: {summary}</p>
             </div>
           </div>
 
-          {/* Optional: Add future stats or matches here */}
           <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700">
-            <h3 className="text-2xl font-bold text-white mb-4">Browse Matches (Coming Soon)</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">
+              {embedding ? "Ready for Matches!" : "Complete Survey First"}
+            </h3>
             <p className="text-gray-400">
-              Once you complete the survey, you can browse dogs best fit for you!
+              {embedding
+                ? "Your personality profile is complete! Browse dogs that match your lifestyle."
+                : "Take the survey to unlock personalized dog recommendations."}
             </p>
+            {embedding && (
+              <button className="mt-6 w-full bg-emerald-600 text-white py-4 rounded-lg font-bold hover:bg-emerald-500 transition" onClick={startBrowsing}>
+                Browse My Matches
+              </button>
+            )}
           </div>
         </div>
       </div>
