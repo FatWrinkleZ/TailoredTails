@@ -1,6 +1,50 @@
 "use client";
+import type React from "react"
+
+import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
+import { useAuthContext } from "@/context/AuthContext"
+
 
 export default function Home() {
+    const router = useRouter()
+  
+
+    const { user } = useAuthContext() as { user: any }
+
+    var validLogin = false;
+  
+    useEffect(() => {
+      if (user) {
+        validLogin=true;
+      }
+    }, [user]);
+
+    const handleStartMatching = () => {
+      if (validLogin) {
+        router.push("/match");
+      } else {
+        router.push("/signin");
+      }
+    };
+
+    const handleSignIn = () => {
+      if (validLogin) {
+        router.push("/home");
+      } else 
+      {
+        router.push("/signin");
+      }
+    };
+
+    const handleSignUp = () => {
+      if (validLogin) {
+        router.push("/home");
+      } else {
+        router.push("/signup");
+      }
+    };
+
   return (
     <main className="min-h-screen flex flex-col bg-slate-950 text-slate-50">
       <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col gap-12 py-10">
@@ -27,15 +71,15 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <button className="px-6 py-3 rounded-lg bg-emerald-500 hover:bg-emerald-400 transition font-semibold text-slate-950">
+                <button className="px-6 py-3 rounded-lg bg-emerald-500 hover:bg-emerald-400 transition font-semibold text-slate-950" onClick={handleStartMatching}>
                   Start Matching
                 </button>
 
-                <button className="px-6 py-3 rounded-lg border border-slate-600 hover:border-slate-400 text-slate-100 text-sm flex items-center justify-center gap-2">
-                  Preview Questionnaire
-                  <span className="text-xs bg-slate-800 px-2 py-0.5 rounded-full">
-                    Prototype
-                  </span>
+                <button className="px-6 py-3 rounded-lg border border-slate-600 hover:border-slate-400 text-slate-100 text-sm flex items-center justify-center gap-2" onClick={handleSignUp}>
+                  Create Account
+                </button>
+                <button className="px-6 py-3 rounded-lg border border-slate-600 hover:border-slate-400 text-slate-100 text-sm flex items-center justify-center gap-2" onClick={handleSignUp}>
+                  Sign In
                 </button>
               </div>
 
@@ -54,7 +98,7 @@ export default function Home() {
                     Sample Match Preview
                   </h2>
                   <span className="text-xs text-emerald-300 bg-emerald-900/40 px-2 py-1 rounded-full">
-                    Prototype
+                    Example (not real)
                   </span>
                 </div>
 
