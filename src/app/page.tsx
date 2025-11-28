@@ -3,7 +3,6 @@ import type React from "react"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { useAuthContext } from "@/context/AuthContext"
-import { ThemeToggle } from "@/components/ThemeToggle"
 
 export default function Home() {
     const router = useRouter()
@@ -44,11 +43,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-colors">
-      {/* Add Theme Toggle in top right */}
-      <div className="absolute top-4 right-4 z-50">
-        <ThemeToggle />
-      </div>
-
       <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col gap-12 py-10">
         {/* Top badge */}
         <section className="mt-4 space-y-6">

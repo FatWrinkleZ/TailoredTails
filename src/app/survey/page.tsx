@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation"
 import { db } from "@/firebase/config";
 import firebase_app from "@/firebase/config";
 import { getAuth } from "firebase/auth";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 function Page() {
   const auth = getAuth(firebase_app);
@@ -75,9 +74,6 @@ function Page() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 p-8 transition-colors">
-      <div className="absolute top-4 right-4">
-        <ThemeToggle />
-      </div>
 
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold mb-2 text-slate-900 dark:text-white">Lifestyle Survey</h1>

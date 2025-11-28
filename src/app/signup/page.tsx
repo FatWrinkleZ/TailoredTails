@@ -5,7 +5,6 @@ import googleAuth from "@/firebase/auth/googleAuth"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { useAuthContext } from "@/context/AuthContext"
-import { ThemeToggle } from "@/components/ThemeToggle"
 
 function Page() {
   const [email, setEmail] = useState("")
@@ -47,9 +46,6 @@ function Page() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-slate-50 dark:bg-slate-900 transition-colors">
-      <div className="absolute top-4 right-4">
-        <ThemeToggle />
-      </div>
 
       <div className="bg-white dark:bg-slate-800 shadow-md rounded-lg px-8 py-10 max-w-md w-full border border-slate-200 dark:border-slate-700 transition-colors">
         <h1 className="text-3xl font-bold mb-6 text-center text-slate-900 dark:text-white">Sign Up</h1>

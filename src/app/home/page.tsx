@@ -5,7 +5,6 @@ import { useEffect, useState } from "react"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/firebase/config"
 import logout from "@/firebase/auth/logout"
-import { ThemeToggle } from "@/components/ThemeToggle"
 
 function Page() {
   const { user } = useAuthContext() as { user: any }
@@ -180,18 +179,7 @@ function Page() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 py-12 px-6 transition-colors">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-10">
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-white">My Dashboard</h1>
-          <div className="flex gap-4 items-center">
-            <ThemeToggle />
-            <button
-              onClick={handleLogout}
-              className="bg-red-600 text-white px-7 py-3 rounded-lg font-semibold hover:bg-red-500 transition-all duration-200 shadow-lg"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
+
 
         <p className="text-slate-600 dark:text-slate-400 text-lg mb-10">
           Welcome back! Your personality profile is ready.

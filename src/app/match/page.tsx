@@ -7,7 +7,6 @@ import { getAuth } from 'firebase/auth';
 import firebase_app from '@/firebase/config';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ThemeToggle } from '@/components/ThemeToggle';
 
 const auth = getAuth(firebase_app);
 
@@ -115,10 +114,6 @@ export default function MatchPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-12 px-4 transition-colors">
-      <div className="absolute top-4 right-4">
-        <ThemeToggle />
-      </div>
-
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-slate-900 dark:text-white mb-3">

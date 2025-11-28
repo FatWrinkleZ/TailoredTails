@@ -1,18 +1,16 @@
 import { AuthContextProvider } from '@/context/AuthContext';
-import { ThemeProvider } from '@/components/ThemeProvider'; //Andres: added ThemeProvider
+import { ThemeProvider } from '@/components/ThemeProvider';
+import { TopBar } from '@/components/TopBar';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
-// Load the Inter font with 'latin' subset
 const inter = Inter({ subsets: ['latin'] });
 
-// Metadata for the application
 export const metadata = {
-  title: 'Next.js + Firebase Starter',
-  description: 'Template to use Next.js with Firebase',
+  title: 'TailoredTails - Find Your Perfect Dog Match',
+  description: 'Match with shelter dogs based on your lifestyle',
 };
 
-// Root layout component for the application
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -20,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <ThemeProvider>
           <AuthContextProvider>
+            <TopBar />
             {children}
           </AuthContextProvider>
         </ThemeProvider>
