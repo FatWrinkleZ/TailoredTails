@@ -7,7 +7,6 @@ import { getAuth } from 'firebase/auth';
 import firebase_app from '@/firebase/config';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ThemeToggle } from '@/components/ThemeToggle';
 
 const auth = getAuth(firebase_app);
 
@@ -107,24 +106,20 @@ export default function MatchPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-slate-50 dark:bg-slate-900">
-        <div className="text-2xl text-slate-700 dark:text-slate-300">Finding your perfect matches...</div>
+      <div className="flex items-center justify-center h-screen bg-gray-900">
+        <div className="text-2xl text-gray-300">Finding your perfect matches...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-12 px-4 transition-colors">
-      <div className="absolute top-4 right-4">
-        <ThemeToggle />
-      </div>
-
+    <div className="min-h-screen bg-gray-950 text-gray-100 py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-slate-900 dark:text-white mb-3">
+          <h1 className="text-5xl font-bold text-white mb-3">
             Your Best Dog Matches
           </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400">
+          <p className="text-xl text-gray-400">
             Ranked from perfect fit to great companion • {dogs.length} dogs analyzed
           </p>
         </div>
@@ -149,8 +144,8 @@ export default function MatchPage() {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 group-hover:transform group-hover:scale-[1.02]">
-                <div className="relative aspect-square bg-slate-200 dark:bg-slate-700">
+              <div className="bg-gray-800 rounded-xl overflow-hidden shadow-xl border border-gray-700 hover:border-gray-600 transition-all duration-300 group-hover:transform group-hover:scale-[1.02]">
+                <div className="relative aspect-square bg-gray-700">
                   <Image
                     src={dog.image_url || "/placeholder-dog.jpg"}
                     alt={dog.name}
@@ -161,25 +156,25 @@ export default function MatchPage() {
                 </div>
 
                 <div className="p-6">
-                  <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{dog.name}</h2>
-                  <p className="text-slate-700 dark:text-slate-300 font-medium mb-3">
+                  <h2 className="text-2xl font-bold text-white mb-2">{dog.name}</h2>
+                  <p className="text-gray-300 font-medium mb-3">
                     {dog.breed} • {dog.age} • {dog.gender}
                   </p>
-                  <p className="text-sm text-slate-500 mb-6">{dog.location}</p>
+                  <p className="text-sm text-gray-500 mb-6">{dog.location}</p>
 
                   <div className="space-y-3">
                     {dog.embedding.map((score, i) => (
                       <div key={i} className="flex items-center gap-3">
-                        <span className="text-xs font-medium text-slate-600 dark:text-slate-400 w-28">
+                        <span className="text-xs font-medium text-gray-400 w-28">
                           {TRAITS[i].label}
                         </span>
-                        <div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
+                        <div className="flex-1 bg-gray-700 rounded-full h-3 overflow-hidden">
                           <div
                             className={`${TRAITS[i].color} h-full transition-all duration-700 ease-out shadow-lg`}
                             style={{ width: `${score * 100}%` }}
                           />
                         </div>
-                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 w-10 text-right">
+                        <span className="text-xs font-semibold text-gray-300 w-10 text-right">
                           {(score * 100).toFixed(0)}%
                         </span>
                       </div>
@@ -196,20 +191,20 @@ export default function MatchPage() {
           <button
             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
             disabled={currentPage === 1}
-            className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-500 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:text-slate-500 transition-all"
+            className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-500 disabled:bg-gray-700 disabled:text-gray-500 transition-all"
           >
             Previous
           </button>
 
-          <span className="text-lg font-medium text-slate-700 dark:text-slate-300">
-            Page <span className="text-blue-500 font-bold">{currentPage}</span> of{' '}
-            <span className="text-blue-500 font-bold">{totalPages}</span>
+          <span className="text-lg font-medium text-gray-300">
+            Page <span className="text-blue-400 font-bold">{currentPage}</span> of{' '}
+            <span className="text-blue-400 font-bold">{totalPages}</span>
           </span>
 
           <button
             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
-            className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-500 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:text-slate-500 transition-all"
+            className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-500 disabled:bg-gray-700 disabled:text-gray-500 transition-all"
           >
             Next
           </button>

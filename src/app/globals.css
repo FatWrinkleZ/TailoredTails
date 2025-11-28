@@ -1,25 +1,36 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
-@import "tailwindcss";
+@tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    /* Light mode colors */
+    --background: 255 255 255;
+    --foreground: 15 23 42;
+    --card: 248 250 252;
+    --card-border: 226 232 240;
+    --primary: 37 99 235;
+    --secondary: 100 116 139;
+    --accent: 16 185 129;
+    --destructive: 220 38 38;
+    --muted: 241 245 249;
+  }
+
+  .dark {
+    /* Dark mode colors */
+    --background: 15 23 42;
+    --foreground: 241 245 249;
+    --card: 30 41 59;
+    --card-border: 51 65 85;
+    --primary: 59 130 246;
+    --secondary: 148 163 184;
+    --accent: 34 197 94;
+    --destructive: 239 68 68;
+    --muted: 51 65 85;
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
 }

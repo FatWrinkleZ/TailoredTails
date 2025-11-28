@@ -1,4 +1,5 @@
 import { AuthContextProvider } from '@/context/AuthContext';
+import { ThemeProvider } from '@/components/ThemeProvider'; //Andres: added ThemeProvider
 import { Inter } from 'next/font/google';
 import './globals.css';
 
@@ -14,18 +15,14 @@ export const metadata = {
 // Root layout component for the application
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      {/*
-        The <head /> component will contain the components returned by the nearest parent
-        head.js. It can be used to define the document head for SEO, metadata, and other purposes.
-        Learn more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
-      */}
+    <html lang="en" suppressHydrationWarning>
       <head />
-      <body>
-        {/* Wrap the children with the AuthContextProvider to provide authentication context */}
-        <AuthContextProvider>
-          {children}
-        </AuthContextProvider>
+      <body className={inter.className}>
+        <ThemeProvider>
+          <AuthContextProvider>
+            {children}
+          </AuthContextProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

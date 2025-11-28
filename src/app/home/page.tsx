@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/firebase/config"
 import logout from "@/firebase/auth/logout"
+import { ThemeToggle } from "@/components/ThemeToggle"
 
 function Page() {
   const { user } = useAuthContext() as { user: any }
@@ -13,7 +14,6 @@ function Page() {
   const [summary, setSummary] = useState<string | null>(null)
 
   const takeSurvey = () => router.push("/survey")
-
   const startBrowsing = () => router.push("/match")
 
   useEffect(() => {
@@ -22,7 +22,6 @@ function Page() {
       return
     }
 
-    // Fetch user's embedding from Firestore
     const fetchEmbedding = async () => {
       try {
         const userDoc = await getDoc(doc(db, "users", user.uid))
@@ -67,12 +66,15 @@ function Page() {
 
     const labels = ["Cleanliness", "Activity", "Social", "Care Time", "Family"]
 
-    // Clear canvas
-    ctx.fillStyle = "#111111"
+    // Check if dark mode is active
+    const isDark = document.documentElement.classList.contains('dark')
+    
+    // Clear canvas with theme-aware background
+    ctx.fillStyle = isDark ? "#0f172a" : "#f8fafc"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     // Draw guide circles
-    ctx.strokeStyle = "#333333"
+    ctx.strokeStyle = isDark ? "#334155" : "#cbd5e1"
     ctx.lineWidth = 1
     for (let r = 40; r <= maxRadius; r += 40) {
       ctx.beginPath()
@@ -91,12 +93,12 @@ function Page() {
       i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
     }
     ctx.closePath()
-    ctx.strokeStyle = "#444444"
+    ctx.strokeStyle = isDark ? "#475569" : "#94a3b8"
     ctx.lineWidth = 2
     ctx.stroke()
 
     // Draw radial lines
-    ctx.strokeStyle = "#333333"
+    ctx.strokeStyle = isDark ? "#334155" : "#cbd5e1"
     ctx.lineWidth = 1
     outerPoints.forEach(p => {
       ctx.beginPath()
@@ -110,7 +112,7 @@ function Page() {
       ctx.beginPath()
       embedding.forEach((value, i) => {
         const angle = (i * 2 * Math.PI) / sides - Math.PI / 2
-        const radius = maxRadius * value  // 0.0 → center, 1.0 → edge
+        const radius = maxRadius * value
         const x = centerX + radius * Math.cos(angle)
         const y = centerY + radius * Math.sin(angle)
 
@@ -119,15 +121,14 @@ function Page() {
       })
       ctx.closePath()
 
-      // Fill with gradient (beautiful!)
+      // Fill with gradient
       const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius)
-      gradient.addColorStop(0, "rgba(34, 197, 94, 0.8)")  // emerald center
-      gradient.addColorStop(1, "rgba(34, 197, 94, 0.2)")  // fade out
+      gradient.addColorStop(0, "rgba(34, 197, 94, 0.8)")
+      gradient.addColorStop(1, "rgba(34, 197, 94, 0.2)")
 
       ctx.fillStyle = gradient
       ctx.fill()
 
-      // Strong outline
       ctx.strokeStyle = "#22c55e"
       ctx.lineWidth = 3
       ctx.stroke()
@@ -135,7 +136,7 @@ function Page() {
 
     // Labels
     ctx.font = "bold 15px Inter, system-ui, sans-serif"
-    ctx.fillStyle = "#e2e8f0"
+    ctx.fillStyle = isDark ? "#e2e8f0" : "#475569"
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"
 
@@ -152,21 +153,20 @@ function Page() {
       ctx.restore()
     })
 
-    // Center message (only if no data)
+    // Center message
     if (!embedding) {
       ctx.font = "18px Inter, system-ui, sans-serif"
-      ctx.fillStyle = "#64748b"
+      ctx.fillStyle = isDark ? "#64748b" : "#94a3b8"
       ctx.textAlign = "center"
       ctx.textBaseline = "middle"
       ctx.fillText("No Personality Data Yet", centerX, centerY)
     } else {
-      // Optional: show score in center
       ctx.font = "bold 16px Inter"
       ctx.fillStyle = "#22c55e"
       ctx.fillText("Your Profile", centerX, centerY)
     }
 
-  }, [user, router, embedding])  // Re-draw when embedding loads
+  }, [user, router, embedding])
 
   const handleLogout = async () => {
     const { error } = await logout()
@@ -178,19 +178,22 @@ function Page() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 py-12 px-6">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 py-12 px-6 transition-colors">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-10">
-          <h1 className="text-4xl font-bold text-white">My Dashboard</h1>
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 text-white px-7 py-3 rounded-lg font-semibold hover:bg-red-500 transition-all duration-200 shadow-lg"
-          >
-            Logout
-          </button>
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white">My Dashboard</h1>
+          <div className="flex gap-4 items-center">
+            <ThemeToggle />
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 text-white px-7 py-3 rounded-lg font-semibold hover:bg-red-500 transition-all duration-200 shadow-lg"
+            >
+              Logout
+            </button>
+          </div>
         </div>
 
-        <p className="text-gray-400 text-lg mb-10">
+        <p className="text-slate-600 dark:text-slate-400 text-lg mb-10">
           Welcome back! Your personality profile is ready.
         </p>
 
@@ -203,32 +206,35 @@ function Page() {
               {embedding ? "Retake Survey" : "Take Personality Survey"}
             </button>
 
-            <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-2xl">
-              <h2 className="text-3xl font-bold text-white mb-6">Your Personality Radar</h2>
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-200 dark:border-slate-700 shadow-2xl transition-colors">
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-6">Your Personality Radar</h2>
               <div className="flex justify-center">
                 <canvas
                   id="personalityChart"
                   width="420"
                   height="420"
-                  className="rounded-2xl bg-gray-950 shadow-inner"
+                  className="rounded-2xl shadow-inner"
                   style={{ imageRendering: "crisp-edges" }}
                 />
               </div>
-            <p className="text-gray-400 mt-6">Summary: {summary}</p>
+              <p className="text-slate-600 dark:text-slate-400 mt-6">Summary: {summary}</p>
             </div>
           </div>
 
-          <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700">
-            <h3 className="text-2xl font-bold text-white mb-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-200 dark:border-slate-700 transition-colors">
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
               {embedding ? "Ready for Matches!" : "Complete Survey First"}
             </h3>
-            <p className="text-gray-400">
+            <p className="text-slate-600 dark:text-slate-400">
               {embedding
                 ? "Your personality profile is complete! Browse dogs that match your lifestyle."
                 : "Take the survey to unlock personalized dog recommendations."}
             </p>
             {embedding && (
-              <button className="mt-6 w-full bg-emerald-600 text-white py-4 rounded-lg font-bold hover:bg-emerald-500 transition" onClick={startBrowsing}>
+              <button 
+                className="mt-6 w-full bg-emerald-600 text-white py-4 rounded-lg font-bold hover:bg-emerald-500 transition" 
+                onClick={startBrowsing}
+              >
                 Browse My Matches
               </button>
             )}
