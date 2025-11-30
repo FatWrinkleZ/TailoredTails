@@ -1,7 +1,6 @@
 "use client"
 import signIn from "@/firebase/auth/signIn"
 import type React from "react"
-
 import googleAuth, {handleGoogleRedirect} from "@/firebase/auth/googleAuth"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
@@ -35,7 +34,6 @@ function Page() {
 
   const handleGoogleSignIn = async () => {
      await googleAuth()
-    // await handleGoogleRedirect();
     if (user) {
     router.push("/home")
     }
@@ -43,20 +41,20 @@ function Page() {
 
   if (user === undefined) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div>Loading...</div>
+      <div className="flex items-center justify-center h-screen bg-white dark:bg-slate-900">
+        <div className="text-slate-900 dark:text-slate-100">Loading...</div>
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <div className="shadow-md rounded-lg px-8 py-10 max-w-md w-full">
-        <h1 className="text-3xl font-bold mb-6 text-center">Sign In</h1>
+    <div className="flex flex-col items-center justify-center h-screen bg-slate-50 dark:bg-slate-900 transition-colors">
+      <div className="bg-white dark:bg-slate-800 shadow-md rounded-lg px-8 py-10 max-w-md w-full border border-slate-200 dark:border-slate-700 transition-colors">
+        <h1 className="text-3xl font-bold mb-6 text-center text-slate-900 dark:text-white">Sign In</h1>
 
         <form onSubmit={handleEmailSignIn} className="space-y-4 mb-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium mb-2">
+            <label htmlFor="email" className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
               Email
             </label>
             <input
@@ -66,11 +64,11 @@ function Page() {
               name="email"
               id="email"
               placeholder="example@mail.com"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 transition-colors"
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium mb-2">
+            <label htmlFor="password" className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
               Password
             </label>
             <input
@@ -80,7 +78,7 @@ function Page() {
               name="password"
               id="password"
               placeholder="password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 transition-colors"
             />
           </div>
           <button
@@ -93,16 +91,16 @@ function Page() {
 
         <div className="relative mb-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t"></div>
+            <div className="w-full border-t border-slate-300 dark:border-slate-600"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-background">Or continue with</span>
+            <span className="px-2 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400">Or continue with</span>
           </div>
         </div>
 
         <button
           onClick={handleGoogleSignIn}
-          className="flex items-center justify-center gap-3 w-full border border-gray-300 font-semibold py-3 rounded-lg hover:bg-gray-50 transition-colors"
+          className="flex items-center justify-center gap-3 w-full border border-slate-300 dark:border-slate-600 font-semibold py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-slate-900 dark:text-slate-100"
         >
           Sign in with Google
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
