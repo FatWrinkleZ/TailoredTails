@@ -147,7 +147,6 @@ function Page() {
 
       ctx.save()
       ctx.translate(textX, textY)
-      ctx.rotate(angle + Math.PI / 2)
       ctx.fillText(labels[i], 0, 0)
       ctx.restore()
     })
