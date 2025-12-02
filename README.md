@@ -1,8 +1,8 @@
-# Next.js 13 Firebase Starter
+# Tailored Tails
 
-This is a starter template for building Next.js 13 applications with Firebase. It provides a solid foundation for developing modern web applications with server-side rendering, authentication, and real-time data synchronization.
+We began by using template for building Next.js 13 applications with Firebase. It provides a solid foundation for developing modern web applications with server-side rendering, authentication, and real-time data synchronization.
 
-## Features
+## Dev Features
 
 - Next.js 13: Build powerful and scalable server-side rendered React applications.
 - Firebase: Leverage the Firebase platform for authentication, real-time database, and cloud functions.
@@ -13,6 +13,14 @@ This is a starter template for building Next.js 13 applications with Firebase. I
 - Environment Variables: Safely manage environment-specific configuration values using environment variables.
 - ESLint and Prettier: Maintain code quality and consistency with the help of ESLint and Prettier.
 
+
+## App Features
+
+- Queries dogs in shelter that is stored in a firebase collection called 'dogs'
+- Dogs have embedding in which the dimensions are directly correlated to behavioral traits
+- Survey that users can take to create their own embeddings
+- Get dogs in order of compatibility (embedding similarity)
+
 ## Prerequisites
 
 Before getting started, ensure you have the following prerequisites:
@@ -22,9 +30,8 @@ Before getting started, ensure you have the following prerequisites:
 
 ## Getting Started
 
-- To start a new project using this template click `Use this template` button.
-- Navigate into the project directory: `cd nextjs-13-firebase-starter`
-- Install the dependencies:
+- clone the repo
+- install dependencies
 
 ```bash
   npm install
